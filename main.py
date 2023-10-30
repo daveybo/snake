@@ -2,6 +2,8 @@ import pygame, sys
 from random import randint as ri
 from pygame.locals import *
 
+""" see instructions file """
+
 # setup pygame
 pygame.init()
 main_clock =pygame.time.Clock()
@@ -17,7 +19,7 @@ pygame.display.set_caption("Game Time!")
 # speed
 MOVE_SPEED = 10
 
-# colours
+# colours = as tuples to match RGB encoding system
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
