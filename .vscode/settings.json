@@ -1,3 +1,7 @@
 {
-    "wolf.disableHotModeWarning": true
+    "wolf.disableHotModeWarning": true,
+    "cSpell.words": [
+        "MOUSEBUTTONUP",
+        "pygame"
+    ]
 }

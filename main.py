@@ -1,6 +1,6 @@
+from pygame.locals import *
 import pygame, sys
 from random import randint as ri
-from pygame.locals import *
 
 """ see instructions file """
 
@@ -56,45 +56,56 @@ exit = False
 while not exit:
     
     for event in pygame.event.get():
-        if event.type == QUIT:
+        
+        # check the event type
+        if event.type == pygame.quit:
+            
             pygame.QUIT()
             sys.exit()
-        if event.type == KEYDOWN:
+            
+        elif event.type == KEYDOWN:
+            
+            # which key?
             if event.key == K_LEFT or event.key == K_a:
                 move_right = False
                 move_left = True
-            if event.key == K_RIGHT or event.key == K_d:
+            elif event.key == K_RIGHT or event.key == K_d:
                 move_left = False
                 move_right = True
-            if event.key == K_UP or event.key == K_w:
+            elif event.key == K_UP or event.key == K_w:
                 move_down = False
                 move_up = True    
-            if event.key == K_DOWN or event.key == K_s:
+            elif event.key == K_DOWN or event.key == K_s:
                 move_up = False
                 move_down = True
-                
-        if event.type == KEYUP:
+            #end if
+            
+        elif event.type == KEYUP:
             
             if event.key == K_ESCAPE:
                 pygame.QUIT()
                 sys.exit()
-            if event.key == K_LEFT or event.key == K_a:
+            elif event.key == K_LEFT or event.key == K_a:
                 move_left = False
-            if event.key == K_RIGHT or event.key == K_d:
+            elif event.key == K_RIGHT or event.key == K_d:
                 move_right = False
-            if event.key == K_UP or event.key == K_w:
+            elif event.key == K_UP or event.key == K_w:
                 move_up = False
-            if event.key == K_DOWN or event.key == K_s:
+            elif event.key == K_DOWN or event.key == K_s:
                 move_down = False
-            if event.key == K_x:
+            elif event.key == K_x:
                 player.top = ri(0, WINDOW_HEIGHT - player.height)
-                
-        if event.type == MOUSEBUTTONUP:
+            #end if
+
+        elif event.type == MOUSEBUTTONUP:
+            
             foods.append(
                 pygame.Rect( event.pos[0], event.pos[1], FOOD_SIZE, FOOD_SIZE )
             )
+        
         #end if
         
+        # go over each food item and create RECT object in the food list
         food_counter += 1
         if food_counter == NEW_FOOD:
             food_counter = 0
@@ -106,29 +117,35 @@ while not exit:
                     FOOD_SIZE
                     )
             )
+        #end if
         
         window_surface.fill(WHITE)
         
+        # adjust position of player RECT
         if move_down and player.bottom < WINDOW_HEIGHT:
             player.top += MOVE_SPEED
-        if move_up and player.top > 0:
+        elif move_up and player.top > 0:
             player.top -= MOVE_SPEED
-        if move_left and player.left > 0:
+        elif move_left and player.left > 0:
             player.left -= MOVE_SPEED
-        if move_right and player.right < WINDOW_WIDTH:
+        elif move_right and player.right < WINDOW_WIDTH:
             player.right += MOVE_SPEED
+        #end if
         
         # draw player
         pygame.draw.rect(window_surface, BLACK, player)
-      
+    
         # check collision
         for food in foods[:]:
             if player.colliderect(food):
                 foods.remove(food)
-          
+            #end if
+        #end for
+        
         # draw food
         for food in range(len(foods)):
             pygame.draw.rect(window_surface, GREEN, foods[food])
+        #end for
         
         pygame.display.update()
         main_clock.tick(40)

@@ -14,4 +14,4 @@ Where classes are presented and at KS4, convert to procedural code first
 1. students to design then code+test scoring system
 2. code+test new obstacles that are bitmap/icons
 3. speed changes
-4. design, code+test how to store contants, etc in a config file
+4. design, code+test how to store constants, etc in a config file
