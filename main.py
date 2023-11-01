@@ -1,6 +1,7 @@
 from pygame.locals import *
 import pygame, sys
 from random import randint as ri
+from pyautogui import alert
 
 """ see instructions file """
 
@@ -13,7 +14,7 @@ WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 400
 WINDOW_DIMENSIONS = (WINDOW_WIDTH, WINDOW_HEIGHT)
 
-window_surface = pygame.display.set_mode( WINDOW_DIMENSIONS, 0, 32)
+window_surface = pygame.display.set_mode( WINDOW_DIMENSIONS, 0 , 32)
 pygame.display.set_caption("Game Time!")
 
 # speed
@@ -25,6 +26,9 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
+MAGIC_FOOD = ( ri(1,254), ri(1,254), ri(1,254) )
+
+colours = []
 
 # player and food
 food_counter = 0
@@ -32,8 +36,10 @@ NEW_FOOD = 40
 FOOD_SIZE = 20
 NUM_FOOD = 20
 
-player = pygame.Rect(300, 100, 50, 50)
+player = pygame.Rect(300, 100, 50, 50) # x-pos, y-pos, x-size, y-size
 foods = []
+
+# generate 100 pieces of food and their positions on the surface
 
 for food in range(NUM_FOOD):
     foods.append(
@@ -82,8 +88,9 @@ while not exit:
             
         elif event.type == KEYUP:
             
+            # on key release
             if event.key == K_ESCAPE:
-                pygame.QUIT()
+                pygame.QUIT
                 sys.exit()
             elif event.key == K_LEFT or event.key == K_a:
                 move_left = False
@@ -99,10 +106,22 @@ while not exit:
 
         elif event.type == MOUSEBUTTONUP:
             
-            foods.append(
-                pygame.Rect( event.pos[0], event.pos[1], FOOD_SIZE, FOOD_SIZE )
-            )
-        
+            pos = pygame.mouse.get_pos()
+            clicked_food = [f for f in foods if f.collidepoint(pos)]
+            
+            if len(clicked_food) > 0:
+                alert("Can't put food here ;-)")
+            else:
+                foods.append(
+                    pygame.Rect( 
+                                event.pos[0], 
+                                event.pos[1], 
+                                FOOD_SIZE, 
+                                FOOD_SIZE
+                    )
+                )
+            #end if
+            
         #end if
         
         # go over each food item and create RECT object in the food list
@@ -142,9 +161,22 @@ while not exit:
             #end if
         #end for
         
+        # decide which piece of food is the magic one
+        magic_item = ri(0, len(foods))
+        
         # draw food
         for food in range(len(foods)):
-            pygame.draw.rect(window_surface, GREEN, foods[food])
+            if food == magic_item:
+                colour = MAGIC_FOOD
+            else:
+                colour = GREEN
+            #edn if
+            
+            pygame.draw.rect(
+                window_surface, 
+                colour, 
+                foods[food]
+            )
         #end for
         
         pygame.display.update()
